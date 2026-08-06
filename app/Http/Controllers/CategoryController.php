@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class CategoryController extends Controller
 {
@@ -42,7 +45,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        $category->loadCount("tasks");
+        return view("categories.show", compact("category"));
     }
 
     /**
@@ -50,22 +54,38 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view("categories.edit", compact("category"));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category): RedirectResponse
     {
-        //
+        $category->update($request->validated());
+
+        return redirect()
+            ->route("categories.index")
+            ->with("success", "Categoria actualizada correctamente");
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category): RedirectResponse
     {
-        //
+        if ($category->tasks()->exists()) {
+            return redirect()
+                ->route("categories.index")
+                ->with(
+                    "error",
+                    "No se puede eliminar una categoria que tenga tarea asociada"
+                );
+        }
+
+        $category->delete();
+        return redirect()
+        ->route("categories.index")
+        ->with("success","Categoria eliminada correctamente");
     }
 }
