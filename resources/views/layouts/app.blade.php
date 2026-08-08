@@ -12,11 +12,29 @@
 
 <body class="bg-light">
 
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('categories.index') }}">
+
+            <a class="navbar-brand" href="{{ route('tasks.index') }}">
                 To-Do List
             </a>
+
+            <div class="navbar-nav">
+
+                <a class="nav-link" href="{{ route('tasks.index') }}">
+                    Tareas
+                </a>
+
+                <a class="nav-link" href="{{ route('categories.index') }}">
+                    Categorías
+                </a>
+
+                <a class="nav-link" href="{{ route('tags.index') }}">
+                    Etiquetas
+                </a>
+
+            </div>
+
         </div>
     </nav>
 
@@ -26,7 +44,7 @@
                 {{ session('success') }}
             </div>
         @endif
-        
+
         @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
