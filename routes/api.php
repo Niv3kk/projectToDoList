@@ -11,12 +11,6 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/prueba', function () {
-    return response()->json([
-        'mensaje'=> 'Mi API REST funciona correctamente',
-    ] );
-});
-
 Route::apiResource('tasks', TaskController::class);
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('tags', TagController::class);
