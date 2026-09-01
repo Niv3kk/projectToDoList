@@ -18,7 +18,7 @@ class CategoryController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $categories = Category::withCount('tasks')
-            ->orderBy('name')
+            ->orderByDesc('id')
             ->get();
 
         return CategoryResource::collection($categories);
